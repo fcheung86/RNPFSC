@@ -8,5 +8,7 @@
     <string name="rock">Rock</string>
     <string name="paper">Paper</string>
     <string name="scissors">Scissors</string>
+    
+    <string name="send">Send</string>
 
 </resources>

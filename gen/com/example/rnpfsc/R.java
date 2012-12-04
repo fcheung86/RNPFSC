@@ -14,11 +14,12 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int menu_settings=0x7f070004;
+        public static final int menu_settings=0x7f070005;
         public static final int paper=0x7f070002;
         public static final int rock=0x7f070000;
         public static final int scissors=0x7f070001;
         public static final int selection=0x7f070003;
+        public static final int send=0x7f070004;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -33,6 +34,7 @@ public final class R {
         public static final int paper=0x7f040004;
         public static final int rock=0x7f040003;
         public static final int scissors=0x7f040005;
+        public static final int send=0x7f040006;
     }
     public static final class style {
         /** 
