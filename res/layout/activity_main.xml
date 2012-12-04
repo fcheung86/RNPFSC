@@ -8,33 +8,38 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
+        android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal" >
 
-        <Button
+        <ImageView
             android:id="@+id/rock"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/rock"
             android:onClick="onClick"
-            android:text="@string/rock" />
+            android:src="@drawable/rock_base" />
 
-        <Button
+        <ImageView
             android:id="@+id/scissors"
-            android:layout_weight="1"
+            style="@drawable/scissors_base"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/scissors"
             android:onClick="onClick"
-            android:text="@string/scissors" />
+            android:src="@drawable/scissors_base" />
 
-        <Button
+        <ImageView
             android:id="@+id/paper"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/paper"
             android:onClick="onClick"
-            android:text="@string/paper" />
+            android:src="@drawable/paper_base" />
+
     </LinearLayout>
 
     <TextView
@@ -49,9 +54,8 @@
         android:id="@+id/send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/selection"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_centerVertical="true"
         android:onClick="send"
         android:text="@string/send" />
 
