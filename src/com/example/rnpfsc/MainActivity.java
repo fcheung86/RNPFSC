@@ -1,6 +1,7 @@
 package com.example.rnpfsc;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -8,6 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+
+	public static final String SEND_MESSAGE = "com.example.SEND_MESSAGE";
+
+	private String strSelection = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +29,7 @@ public class MainActivity extends Activity {
 
 	public void onClick(View view) {
 		Button button = (Button) view;
-		String strSelection = button.getText().toString();
+		strSelection = button.getText().toString();
 
 		TextView selection = (TextView) findViewById(R.id.selection);
 		selection.setText("You selected " + strSelection);
@@ -33,4 +38,14 @@ public class MainActivity extends Activity {
 		// TODO send strSelection to NFC tag
 	}
 
+	public void send(View view) {
+		if (strSelection == null) {
+			return;
+		}
+
+		Intent intent = new Intent(this, ResultActivity.class);
+		intent.putExtra(SEND_MESSAGE, strSelection);
+
+		startActivity(intent);
+	}
 }

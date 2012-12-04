@@ -4,11 +4,10 @@
     <string name="app_name">RNPFSC</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    
     <string name="rock">Rock</string>
     <string name="paper">Paper</string>
     <string name="scissors">Scissors</string>
-    
     <string name="send">Send</string>
+    <string name="title_activity_result">ResultActivity</string>
 
 </resources>

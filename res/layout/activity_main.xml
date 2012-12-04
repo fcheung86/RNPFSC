@@ -52,7 +52,7 @@
         android:layout_below="@+id/selection"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:onClick="onClick"
+        android:onClick="send"
         android:text="@string/send" />
 
 </RelativeLayout>
