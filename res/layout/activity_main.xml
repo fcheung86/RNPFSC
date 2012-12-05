@@ -43,6 +43,15 @@
             android:background="@drawable/scissors_base"
             android:contentDescription="@string/scissors"
             android:onClick="onClick" />
+
+        <Button
+            android:id="@+id/buttonLoginActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/paper"
+            android:text="@string/login" />
+
     </RelativeLayout>
 
     <TextView
