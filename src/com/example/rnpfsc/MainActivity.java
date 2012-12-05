@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.facebook.LoggingBehaviors;
@@ -20,14 +21,14 @@ public class MainActivity extends Activity {
 	static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
 	Button buttonLoginActivity;
 	Session.StatusCallback statusCallback = new SessionStatusCallback();
-	
+
 	private String mStrSelection = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		buttonLoginActivity = (Button) findViewById(R.id.buttonLoginActivity);
 
 		Settings.addLoggingBehavior(LoggingBehaviors.INCLUDE_ACCESS_TOKENS);
@@ -57,7 +58,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void onClick(View view) {
-		Button button = (Button) view;
+		ImageButton button = (ImageButton) view;
 		mStrSelection = button.getContentDescription().toString();
 
 		TextView selection = (TextView) findViewById(R.id.selection);
@@ -77,7 +78,7 @@ public class MainActivity extends Activity {
 
 		startActivity(intent);
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
