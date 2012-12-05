@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -12,35 +12,38 @@
         android:layout_marginTop="50dp"
         android:orientation="horizontal" >
 
-        <ImageView
+        <Button
             android:id="@+id/rock"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/rock_base"
             android:contentDescription="@string/rock"
-            android:onClick="onClick"
-            android:src="@drawable/rock_base" />
+            android:onClick="onClick" />
 
-        <ImageView
-            android:id="@+id/scissors"
-            style="@drawable/scissors_base"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/scissors"
-            android:onClick="onClick"
-            android:src="@drawable/scissors_base" />
-
-        <ImageView
+        <Button
             android:id="@+id/paper"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/paper_base"
             android:contentDescription="@string/paper"
-            android:onClick="onClick"
-            android:src="@drawable/paper_base" />
+            android:onClick="onClick" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/scissors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/scissors_base"
+            android:contentDescription="@string/scissors"
+            android:onClick="onClick" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/selection"
@@ -54,8 +57,9 @@
         android:id="@+id/send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/selection"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="20dp"
         android:onClick="send"
         android:text="@string/send" />
 

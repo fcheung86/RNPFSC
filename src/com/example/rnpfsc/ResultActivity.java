@@ -36,7 +36,7 @@ public class ResultActivity extends Activity {
 		} else {
 			theirSelection = "Scissors";
 		}
-		them.setText("He/She select " + theirSelection);
+		them.setText("He/She selected " + theirSelection);
 
 		winner.setText(calculateWinner(yourSelection, theirSelection));
 

@@ -12,7 +12,7 @@ public class MainActivity extends Activity {
 
 	public static final String SEND_MESSAGE = "com.example.SEND_MESSAGE";
 
-	private String strSelection = null;
+	private String mStrSelection = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +29,22 @@ public class MainActivity extends Activity {
 
 	public void onClick(View view) {
 		Button button = (Button) view;
-		strSelection = button.getText().toString();
+		mStrSelection = button.getContentDescription().toString();
 
 		TextView selection = (TextView) findViewById(R.id.selection);
-		selection.setText("You selected " + strSelection);
+		selection.setText("You selected " + mStrSelection);
 
 		// TODO get Facebook ID
 		// TODO send strSelection to NFC tag
 	}
 
 	public void send(View view) {
-		if (strSelection == null) {
+		if (mStrSelection == null) {
 			return;
 		}
 
 		Intent intent = new Intent(this, ResultActivity.class);
-		intent.putExtra(SEND_MESSAGE, strSelection);
+		intent.putExtra(SEND_MESSAGE, mStrSelection);
 
 		startActivity(intent);
 	}
