@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback 
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 		if (mNfcAdapter == null) {
 			Toast.makeText(this, "NFC is not available", Toast.LENGTH_LONG).show();
-			finish();
+			// finish();
 			return;
 		}
 		// Register callback
@@ -198,15 +198,14 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback 
 	@Override
 	public NdefMessage createNdefMessage(NfcEvent event) {
 		String text = ("Beam me up, Android!\n\n" + "Beam Time: " + System.currentTimeMillis());
-		NdefMessage msg = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("application/vnd.com.example.android.beam", text.getBytes())
+		NdefMessage msg = new NdefMessage(new NdefRecord[] { NdefRecord.createMime("application/vnd.com.example.rnpfsc", text.getBytes())
 		/**
 		 * The Android Application Record (AAR) is commented out. When a device receives a push with an AAR in it, the
 		 * application specified in the AAR is guaranteed to run. The AAR overrides the tag dispatch system. You can add
 		 * it back in to guarantee that this activity starts when receiving a beamed message. For now, this code uses
 		 * the tag dispatch system.
 		 */
-		// ,NdefRecord.createApplicationRecord("com.example.android.beam")
-				});
+		, NdefRecord.createApplicationRecord("com.example.rnpfsc") });
 		return msg;
 	}
 
