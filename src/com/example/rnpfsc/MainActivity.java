@@ -11,14 +11,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.facebook.LoggingBehaviors;
-import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
-import com.facebook.model.GraphUser;
 
-public class MainActivity extends Activity {
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcAdapter.CreateNdefMessageCallback;
+import android.nfc.NfcEvent;
+import android.os.Parcelable;
+import android.widget.Toast;
+
+public class MainActivity extends Activity implements CreateNdefMessageCallback {
 
 	public static final String SEND_MESSAGE = "com.example.SEND_MESSAGE";
 	static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
@@ -26,6 +31,9 @@ public class MainActivity extends Activity {
 	Session.StatusCallback statusCallback = new SessionStatusCallback();
 
 	private String mStrSelection = null;
+	
+	NfcAdapter mNfcAdapter;
+	TextView opponentMove;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +59,18 @@ public class MainActivity extends Activity {
 		}
 
 		updateView();
+		
+		// Check for available NFC Adapter
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter == null) {
+            Toast.makeText(this, "NFC is not available", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        // Register callback
+        mNfcAdapter.setNdefPushMessageCallback(this, this);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -109,22 +127,6 @@ public class MainActivity extends Activity {
 
 	private void updateView() {
 		Session session = Session.getActiveSession();
-		
-	    if (session.isOpened()) {
-	    // make request to the /me API
-	      Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
-	        // callback after Graph API response with user object
-	        @Override
-	        public void onCompleted(GraphUser user, Response response) {
-	          if (user != null) {
-	            TextView welcome = (TextView) findViewById(R.id.welcome);
-	            welcome.setText("Hello " + user.getName() + "!");
-	          }
-	        }
-	      });
-	      Request.executeBatchAsync(request);
-	    }
-	    
 		if (session.isOpened()) {
 			// textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
 			buttonLoginActivity.setText(R.string.logout);
@@ -165,4 +167,53 @@ public class MainActivity extends Activity {
 			updateView();
 		}
 	}
+	
+    @Override
+    public NdefMessage createNdefMessage(NfcEvent event) {
+        String text = ("Beam me up, Android!\n\n" +
+                "Beam Time: " + System.currentTimeMillis());
+        NdefMessage msg = new NdefMessage(
+                new NdefRecord[] { NdefRecord.createMime(
+                        "application/vnd.com.example.android.beam", text.getBytes())
+         /**
+          * The Android Application Record (AAR) is commented out. When a device
+          * receives a push with an AAR in it, the application specified in the AAR
+          * is guaranteed to run. The AAR overrides the tag dispatch system.
+          * You can add it back in to guarantee that this
+          * activity starts when receiving a beamed message. For now, this code
+          * uses the tag dispatch system.
+          */
+          //,NdefRecord.createApplicationRecord("com.example.android.beam")
+        });
+        return msg;
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Check to see that the Activity started due to an Android Beam
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+            processIntent(getIntent());
+        }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        // onResume gets called after this to handle the intent
+        setIntent(intent);
+    }
+
+    /**
+     * Parses the NDEF Message from the intent and prints to the TextView
+     */
+    void processIntent(Intent intent) {
+        opponentMove = (TextView) findViewById(R.id.opponentMove);
+        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(
+                NfcAdapter.EXTRA_NDEF_MESSAGES);
+        // only one message sent during the beam
+        NdefMessage msg = (NdefMessage) rawMsgs[0];
+        // record 0 contains the MIME type, record 1 is the AAR, if present
+        opponentMove.setText(new String(msg.getRecords()[0].getPayload()));
+    }
+    
 }
