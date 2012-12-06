@@ -52,6 +52,15 @@
             android:layout_centerHorizontal="true"
             android:text="@string/login" />
 
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonLoginActivity"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="34dp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
     </RelativeLayout>
 
     <TextView

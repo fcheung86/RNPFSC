@@ -11,9 +11,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.facebook.LoggingBehaviors;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
+import com.facebook.model.GraphUser;
 
 public class MainActivity extends Activity {
 
@@ -49,7 +52,7 @@ public class MainActivity extends Activity {
 
 		updateView();
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -106,6 +109,22 @@ public class MainActivity extends Activity {
 
 	private void updateView() {
 		Session session = Session.getActiveSession();
+		
+	    if (session.isOpened()) {
+	    // make request to the /me API
+	      Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
+	        // callback after Graph API response with user object
+	        @Override
+	        public void onCompleted(GraphUser user, Response response) {
+	          if (user != null) {
+	            TextView welcome = (TextView) findViewById(R.id.welcome);
+	            welcome.setText("Hello " + user.getName() + "!");
+	          }
+	        }
+	      });
+	      Request.executeBatchAsync(request);
+	    }
+	    
 		if (session.isOpened()) {
 			// textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
 			buttonLoginActivity.setText(R.string.logout);
