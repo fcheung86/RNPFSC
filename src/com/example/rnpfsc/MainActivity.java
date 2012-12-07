@@ -203,10 +203,17 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback 
 	@Override
 	public void onResume() {
 		super.onResume();
+		overridePendingTransition(0, 0);
 		// Check to see that the Activity started due to an Android Beam
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
 			processIntent(getIntent());
 		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		overridePendingTransition(0, 0);
 	}
 
 	@Override

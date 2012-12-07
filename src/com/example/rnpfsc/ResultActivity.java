@@ -61,6 +61,18 @@ public class ResultActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		overridePendingTransition(0, 0);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		overridePendingTransition(0, 0);
+	}
+
 	private void setImage(ImageView imageView, String selection) {
 		if (selection.equalsIgnoreCase("rock")) {
 			imageView.setImageResource(R.drawable.rock_base);
