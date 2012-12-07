@@ -84,22 +84,13 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback 
 		ImageButton button = (ImageButton) view;
 		mStrSelection = button.getContentDescription().toString();
 
-		TextView selection = (TextView) findViewById(R.id.selection);
-		selection.setText("You selected " + mStrSelection);
-
-		// TODO get Facebook ID
-		// TODO send strSelection to NFC tag
-	}
-
-	public void send(View view) {
-		if (mStrSelection == null) {
-			return;
-		}
-
 		Intent intent = new Intent(this, ResultActivity.class);
 		intent.putExtra(SEND_MESSAGE, mStrSelection);
 
 		startActivity(intent);
+
+		// TODO get Facebook ID
+		// TODO send strSelection to NFC tag
 	}
 
 	@Override

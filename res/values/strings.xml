@@ -12,5 +12,7 @@
     <string name="app_id">394533090621990</string>
     <string name="login">Login</string>
     <string name="logout">Log Out</string>
+    <string name="you">you</string>
+    <string name="them">them</string>
 
 </resources>

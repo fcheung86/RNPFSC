@@ -4,31 +4,31 @@
     android:layout_height="match_parent"
     tools:context=".ResultActivity" >
 
-    <TextView
+    <ImageView
+        android:id="@+id/them"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:contentDescription="@string/them" />
+    
+    <ImageView
         android:id="@+id/you"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginTop="200dp"
+        android:contentDescription="@string/you" />
 
     <TextView
-        android:id="@+id/them"
+        android:id="@+id/result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/you"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/winner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/them"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginBottom="100dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
