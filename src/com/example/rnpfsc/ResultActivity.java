@@ -2,6 +2,12 @@ package com.example.rnpfsc;
 
 import java.util.Random;
 
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,43 +21,28 @@ public class ResultActivity extends Activity {
 	public static final String LOSE = "You lose... =\\";
 	public static final String TIE = "Tie!!!";
 	public static final String ERROR = "Error!!!";
+	String yourSelection = null;
+	
+	static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
+	Session.StatusCallback statusCallback1 = new SessionStatusCallback1();
+	GraphUser testuser;
+	String name = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
-
-		TextView result = (TextView) findViewById(R.id.result);
-
+				
 		Intent intent = getIntent();
-		String yourSelection = intent.getStringExtra(MainActivity.SEND_MESSAGE);
-
-		// TODO read the other person's NFC instead
-		int randomSelection = new Random().nextInt(3);
-		String theirSelection;
-		switch (randomSelection) {
-		case 0:
-			theirSelection = "Rock";
-			break;
-		case 1:
-			theirSelection = "Paper";
-			break;
-		case 2:
-			theirSelection = "Scissors";
-			break;
-		default:
-			theirSelection = "ERROR";
-			break;
+		yourSelection = intent.getStringExtra(MainActivity.SEND_MESSAGE);
+		
+		Session session = Session.getActiveSession();
+		if (session.isClosed()){
+			setResults();
 		}
-
-		result.setText(calculateWinner(yourSelection, theirSelection));
-
-		ImageView youImg = (ImageView) findViewById(R.id.you);
-		setImage(youImg, yourSelection);
-
-		ImageView themImg = (ImageView) findViewById(R.id.them);
-		setImage(themImg, theirSelection);
-
+		else {
+			GetFbAccess();
+		}
 	}
 
 	@Override
@@ -73,6 +64,18 @@ public class ResultActivity extends Activity {
 		overridePendingTransition(0, 0);
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		Session.getActiveSession().addCallback(statusCallback1);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		Session.getActiveSession().removeCallback(statusCallback1);
+	}
+	
 	private void setImage(ImageView imageView, String selection) {
 		if (selection.equalsIgnoreCase("rock")) {
 			imageView.setImageResource(R.drawable.rock_base);
@@ -120,6 +123,76 @@ public class ResultActivity extends Activity {
 
 		} else {
 			return ERROR;
+		}
+	}
+	
+	public void GetFbAccess()
+	{
+		Session session = Session.getActiveSession();
+		
+		if (session.isOpened()) {
+			Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
+
+				@Override
+				public void onCompleted(GraphUser user, Response response) {
+					if (user != null) {
+						testuser = user;
+						name = user.getName();
+						setResults();
+					}
+				}
+			});
+
+			Request.executeBatchAsync(request);
+			//Request.executeBatchAndWait(request);
+		}
+		else {
+			testuser = null;
+		}
+		
+		Session.openActiveSession(this, true, statusCallback1);
+	}
+	
+	public void setResults(){
+		TextView result = (TextView) findViewById(R.id.result);
+		
+		// TODO read the other person's NFC instead
+		int randomSelection = new Random().nextInt(3);
+		String theirSelection;
+		switch (randomSelection) {
+		case 0:
+			theirSelection = "Rock";
+			break;
+		case 1:
+			theirSelection = "Paper";
+			break;
+		case 2:
+			theirSelection = "Scissors";
+			break;
+		default:
+			theirSelection = "ERROR";
+			break;
+		}
+
+		if(testuser != null){
+			result.setText(testuser.getFirstName() + ", " + calculateWinner(yourSelection, theirSelection));
+		}
+		else {
+			result.setText(calculateWinner(yourSelection, theirSelection));
+		}
+		
+
+		ImageView youImg = (ImageView) findViewById(R.id.you);
+		setImage(youImg, yourSelection);
+
+		ImageView themImg = (ImageView) findViewById(R.id.them);
+		setImage(themImg, theirSelection);
+	}
+	
+	private class SessionStatusCallback1 implements Session.StatusCallback {
+		@Override
+		public void call(Session session, SessionState state, Exception exception) {
+			//setResults();
 		}
 	}
 }

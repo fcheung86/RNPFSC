@@ -28,9 +28,11 @@ import com.facebook.model.GraphUser;
 public class MainActivity extends Activity implements CreateNdefMessageCallback {
 
 	public static final String SEND_MESSAGE = "com.example.SEND_MESSAGE";
+	
 	static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
 	Button buttonLoginActivity;
 	Session.StatusCallback statusCallback = new SessionStatusCallback();
+	GraphUser testuser = null;
 
 	private String mStrSelection = null;
 
@@ -82,11 +84,10 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback 
 
 	public void onClick(View view) {
 		ImageButton button = (ImageButton) view;
-		mStrSelection = button.getContentDescription().toString();
-
+		mStrSelection = button.getContentDescription().toString();		
+		
 		Intent intent = new Intent(this, ResultActivity.class);
 		intent.putExtra(SEND_MESSAGE, mStrSelection);
-
 		startActivity(intent);
 
 		// TODO get Facebook ID
@@ -120,33 +121,22 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback 
 
 	private void updateView() {
 		Session session = Session.getActiveSession();
-
+		final TextView welcome = (TextView) findViewById(R.id.welcome);
+		
 		if (session.isOpened()) {
-
-			// make request to the /me API
-
 			Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
 
-				// callback after Graph API response with user object
 				@Override
 				public void onCompleted(GraphUser user, Response response) {
-
 					if (user != null) {
-
-						TextView welcome = (TextView) findViewById(R.id.welcome);
-
+						testuser = user;
 						welcome.setText("Hello " + user.getName() + "!");
-
 					}
-
 				}
-
 			});
 
 			Request.executeBatchAsync(request);
-		}
-		if (session.isOpened()) {
-			// textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
+
 			buttonLoginActivity.setText(R.string.logout);
 			buttonLoginActivity.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
@@ -154,6 +144,8 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback 
 				}
 			});
 		} else {
+			welcome.setText("");
+			
 			buttonLoginActivity.setText(R.string.login);
 			buttonLoginActivity.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
