@@ -28,11 +28,13 @@ import com.facebook.model.GraphUser;
 public class MainActivity extends Activity implements CreateNdefMessageCallback {
 
 	public static final String SEND_MESSAGE = "com.example.SEND_MESSAGE";
+	public static final String USER_NAME = "com.example.USER_NAME";
 	
 	static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
 	Button buttonLoginActivity;
 	Session.StatusCallback statusCallback = new SessionStatusCallback();
 	GraphUser testuser = null;
+	String userName = null;
 
 	private String mStrSelection = null;
 
@@ -88,6 +90,7 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback 
 		
 		Intent intent = new Intent(this, ResultActivity.class);
 		intent.putExtra(SEND_MESSAGE, mStrSelection);
+		intent.putExtra(USER_NAME, userName);
 		startActivity(intent);
 
 		// TODO get Facebook ID
@@ -130,6 +133,7 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback 
 				public void onCompleted(GraphUser user, Response response) {
 					if (user != null) {
 						testuser = user;
+						userName = user.getName();
 						welcome.setText("Hello " + user.getName() + "!");
 					}
 				}
